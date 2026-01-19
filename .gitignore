@@ -1,0 +1,41 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Builds
+dist/
+build/
+coverage/
+*.tsbuildinfo
+
+# Vite / React
+.vite/
+.eslintcache
+
+# Next (por si acaso)
+.next/
+out/
+
+# Turborepo
+.turbo/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+*.log
+
+# Env files (NO subir secretos)
+.env
+.env.*
+!.env.example
+
+# OS / Editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Docker volumes / local data (si aplicara)
+pgdata/
