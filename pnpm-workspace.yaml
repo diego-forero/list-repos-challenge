@@ -1,0 +1,9 @@
+packages:
+  - "apps/*"
+  - "packages/*"
+
+# Allow packages that need postinstall/build scripts (pnpm v10)
+onlyBuiltDependencies:
+  - esbuild
+  - "@swc/core"
+  - argon2
