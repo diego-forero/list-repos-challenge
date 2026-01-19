@@ -38,7 +38,7 @@ Backend reads env vars from the repo root `.env` (because docker-compose mounts 
 # Backend
 PORT=3001
 DATABASE_URL=postgresql://app:app@db:5432/hellobuild
-APP_URL=http://localhost:5173
+APP_URL=http://localhost:8080
 
 # OAuth GitHub
 GITHUB_CLIENT_ID=...
@@ -199,7 +199,7 @@ The user logs into the app with email/password, then **connects a GitHub account
 This redirects (302) to GitHub’s authorization page.  
 After the user approves, GitHub redirects to the backend callback, and the backend redirects to:
 
-- `http://localhost:5173/profile` (frontend profile page)
+- `http://localhost:8080/profile` (frontend profile page)
 
 ### Check connection
 `GET /github/me` (requires app session)

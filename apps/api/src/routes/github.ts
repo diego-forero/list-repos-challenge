@@ -103,7 +103,7 @@ router.get("/oauth/callback", requireAuth, async (req, res) => {
   }
 
   // Redirect back to frontend profile
-  const appUrl = process.env.APP_URL ?? "http://localhost:5173";
+  const appUrl = process.env.APP_URL ?? "http://localhost:8080";
   res.redirect(`${appUrl}/profile`);
 });
 

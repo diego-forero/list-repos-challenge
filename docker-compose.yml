@@ -1,44 +1,48 @@
 services:
   db:
-    image: postgres:16
+    image: postgres:16-alpine
     environment:
+      POSTGRES_DB: hellobuild
       POSTGRES_USER: app
       POSTGRES_PASSWORD: app
-      POSTGRES_DB: hellobuild
     ports:
       - "5432:5432"
     volumes:
-      - pgdata:/var/lib/postgresql/data
+      - db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U app -d hellobuild"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
 
   api:
-    image: node:20-alpine
-    working_dir: /app
-    volumes:
-      - ./:/app
-    env_file:
-      - .env
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file: .env
     environment:
-      CI: "true"
-    command: sh -c "corepack enable && corepack prepare pnpm@10.28.0 --activate && cd apps/api && pnpm i && pnpm dev"
+      DATABASE_URL: postgresql://app:app@db:5432/hellobuild
+      PORT: "3001"
+      APP_URL: http://localhost:8080
+    depends_on:
+      db:
+        condition: service_healthy
     ports:
       - "3001:3001"
-    depends_on:
-      - db
+    command: ["sh", "-lc", "pnpm --filter api db:migrate && pnpm --filter api dev"]
 
   web:
-    image: node:20-alpine
-    working_dir: /app
-    volumes:
-      - ./:/app
-    env_file:
-      - .env
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file: .env
     environment:
-      CI: "true"
-    command: sh -c "corepack enable && corepack prepare pnpm@10.28.0 --activate && cd apps/web && pnpm i && pnpm dev --host 0.0.0.0 --port 5173"
-    ports:
-      - "5173:5173"
+      VITE_API_URL: http://localhost:3001
     depends_on:
       - api
+    ports:
+      - "8080:8080"
+    command: ["pnpm", "--filter", "web", "dev", "--", "--host", "0.0.0.0", "--port", "8080"]
 
 volumes:
-  pgdata:
+  db_data:

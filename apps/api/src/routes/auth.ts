@@ -66,7 +66,6 @@ router.post("/login", async (req, res) => {
 
 router.post("/logout", async (req, res) => {
   const sid = req.cookies?.[SESSION_COOKIE_NAME];
-  console.log("TEST LOGOUT")
   if (sid) {
     await db.delete(sessions).where(eq(sessions.id, sid));
   }
