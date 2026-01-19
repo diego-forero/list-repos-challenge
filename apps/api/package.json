@@ -8,10 +8,11 @@
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
     "dev": "tsx watch src/server.ts",
-    "test": "vitest"
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "keywords": [],
-  "author": "",
+  "author": "Diego Forero",
   "license": "ISC",
   "packageManager": "pnpm@10.28.0",
   "dependencies": {

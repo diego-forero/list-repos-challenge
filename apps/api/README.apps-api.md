@@ -71,9 +71,6 @@ Useful commands:
 # Check status
 docker compose ps
 
-# Follow API logs
-docker compose logs -f api
-
 # Stop everything
 docker compose down
 ```
@@ -296,16 +293,33 @@ Responses:
 
 ## Testing
 
-If you add tests under `src/**.test.ts`, you can run:
+This API includes **end-to-end tests** (Vitest + Supertest) that hit the running Express server and use Postgres.
+
+### Recommended workflow (while the stack is running)
+
+1) Start the stack from the repo root:
 
 ```bash
-pnpm test
+docker compose up --build
 ```
 
-Recommended coverage for the challenge:
-- Auth: signup/login/me/logout
-- Favorites: add/list/delete
-- (Optional) GitHub: mock fetch for /github/repos
+2) In another terminal, run:
+
+```bash
+docker compose run --rm api pnpm --filter api test
+```
+
+This runs tests in a temporary one-off container, without stopping the running API.
+
+
+### Standalone tests (without running the full stack)
+
+```bash
+docker compose up -d db
+docker compose run --rm api pnpm --filter api db:migrate
+docker compose run --rm api pnpm --filter api test
+```
+
 
 ---
 

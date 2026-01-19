@@ -1,9 +1,10 @@
-import "dotenv/config";
 import postgres from "postgres";
 import { drizzle } from "drizzle-orm/postgres-js";
+import { env } from "../config/env";
 
-const databaseUrl = process.env.DATABASE_URL;
-if (!databaseUrl) throw new Error("DATABASE_URL is not set");
-
-export const sql = postgres(databaseUrl, { max: 10 });
+export const sql = postgres(env.DATABASE_URL, { max: 10 });
 export const db = drizzle(sql);
+
+export async function closeDb() {
+  await sql.end({ timeout: 5 });
+}

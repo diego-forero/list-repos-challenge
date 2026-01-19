@@ -11,5 +11,4 @@ RUN pnpm config set node-linker isolated
 COPY . .
 
 # Instala deps del workspace
-ENV NODE_ENV=development
 RUN pnpm -r install --frozen-lockfile
